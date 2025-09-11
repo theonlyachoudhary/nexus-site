@@ -2,18 +2,26 @@ import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
 
+import { AboutTeaserBlock } from '@/blocks/AboutTeaser/Component'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
+import { CTASectionBlock } from '@/blocks/CTASection/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { SolutionsBlock } from '@/blocks/SolutionsBlock/Component'
+import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
 
 const blockComponents = {
+  aboutTeaser: AboutTeaserBlock,
   archive: ArchiveBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
+  ctaSection: CTASectionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  solutions: SolutionsBlock,
+  testimonials: TestimonialsBlock,
 }
 
 export const RenderBlocks: React.FC<{
