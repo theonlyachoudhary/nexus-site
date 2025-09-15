@@ -2,11 +2,17 @@
   "version": 3,
   "build": {
     "env": {
-      "POSTGRES_URL": "@POSTGRES_URL",
-      "PAYLOAD_SECRET": "@PAYLOAD_SECRET"
+      "NEON_DATABASE_URL": "@NEON_DATABASE_URL",
+      "BLOB_READ_WRITE_TOKEN": "@BLOB_READ_WRITE_TOKEN",
+      "PAYLOAD_SECRET": "@PAYLOAD_SECRET",
+      "CRON_SECRET": "@CRON_SECRET",
+      "PREVIEW_SECRET": "@PREVIEW_SECRET"
     }
   },
-  "routes": [{ "src": "/admin/(.*)", "dest": "/api/admin/$1" }],
+  "routes": [
+    { "src": "/admin/(.*)", "dest": "/api/payload-admin/$1" },
+    { "src": "/api/preview/(.*)", "dest": "/api/preview/$1" }
+  ],
   "functions": {
     "api/**.js": {
       "memory": 1024,

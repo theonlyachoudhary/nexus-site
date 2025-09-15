@@ -1,6 +1,6 @@
 // storage-adapter-import-placeholder
-import { sqliteAdapter } from '@payloadcms/db-sqlite'
-import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
+import { postgresAdapter } from '@payloadcms/db-postgres'
+import { vercelBlobAdapter } from '@payloadcms/plugin-vercel-blob'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
@@ -61,29 +61,24 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
-  db:
-    process.env.POSTGRES_URL || process.env.DATABASE_URL
-      ? vercelPostgresAdapter({
-          connectionString: process.env.POSTGRES_URL || process.env.DATABASE_URL,
-          max: Number(process.env.DB_MAX_POOL || 10),
-          idleTimeoutMillis: Number(process.env.DB_IDLE_TIMEOUT || 30000),
-          ssl: process.env.DB_SSL !== 'false',
-          migrations: {
-            dir: path.resolve(dirname, process.env.PAYLOAD_MIGRATIONS_DIR || 'migrations'),
-            tableName: process.env.PAYLOAD_MIGRATIONS_TABLE || 'payload_migrations',
-          },
-        })
-      : sqliteAdapter({
-          client: {
-            url: process.env.DATABASE_URI || '',
-          },
-        }),
+  db: postgresAdapter({
+    url: process.env.NEON_DATABASE_URL,
+    ssl: true,
+    migrations: {
+      dir: path.resolve(dirname, process.env.PAYLOAD_MIGRATIONS_DIR || 'migrations'),
+      tableName: process.env.PAYLOAD_MIGRATIONS_TABLE || 'payload_migrations',
+    },
+    // Add any Neon-specific options here
+  }),
   collections: [Pages, Posts, Media, Categories, Users, TeamMembers],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [
     ...plugins,
-    // storage-adapter-placeholder
+    vercelBlobAdapter({
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      // Add other options as needed
+    }),
   ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
