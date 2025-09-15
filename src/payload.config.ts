@@ -1,5 +1,6 @@
 // storage-adapter-import-placeholder
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
@@ -11,6 +12,7 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
+import { TeamMembers } from './collections/TeamMembers'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -59,12 +61,24 @@ export default buildConfig({
   },
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URI || '',
-    },
-  }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  db:
+    process.env.POSTGRES_URL || process.env.DATABASE_URL
+      ? vercelPostgresAdapter({
+          connectionString: process.env.POSTGRES_URL || process.env.DATABASE_URL,
+          max: Number(process.env.DB_MAX_POOL || 10),
+          idleTimeoutMillis: Number(process.env.DB_IDLE_TIMEOUT || 30000),
+          ssl: process.env.DB_SSL !== 'false',
+          migrations: {
+            dir: path.resolve(dirname, process.env.PAYLOAD_MIGRATIONS_DIR || 'migrations'),
+            tableName: process.env.PAYLOAD_MIGRATIONS_TABLE || 'payload_migrations',
+          },
+        })
+      : sqliteAdapter({
+          client: {
+            url: process.env.DATABASE_URI || '',
+          },
+        }),
+  collections: [Pages, Posts, Media, Categories, Users, TeamMembers],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [

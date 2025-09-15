@@ -72,6 +72,7 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    teamMembers: TeamMember;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -88,6 +89,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    teamMembers: TeamMembersSelect<false> | TeamMembersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -149,7 +151,20 @@ export interface Page {
   id: number;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'designHero';
+    title?: string | null;
+    highlightedWords?:
+      | {
+          word: string;
+          id?: string | null;
+        }[]
+      | null;
+    subtitle?: string | null;
+    ctaButton?: {
+      text: string;
+      url: string;
+      newTab?: boolean | null;
+    };
     richText?: {
       root: {
         type: string;
@@ -194,6 +209,7 @@ export interface Page {
   layout: (
     | AboutTeaserBlock
     | CallToActionBlock
+    | CaseStudiesBlock
     | ContentBlock
     | CTASectionBlock
     | MediaBlock
@@ -484,6 +500,62 @@ export interface CallToActionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CaseStudiesBlock".
+ */
+export interface CaseStudiesBlock {
+  heading: string;
+  subheading?: string | null;
+  /**
+   * Add case studies to showcase
+   */
+  caseStudies?:
+    | {
+        title: string;
+        client: string;
+        industry?: string | null;
+        challenge: string;
+        solution: string;
+        results?:
+          | {
+              result?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        metrics?:
+          | {
+              label: string;
+              value: string;
+              id?: string | null;
+            }[]
+          | null;
+        image?: (number | null) | Media;
+        tags?:
+          | {
+              tag?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * How to display the case studies
+   */
+  displayStyle?: ('grid' | 'featured' | 'carousel') | null;
+  /**
+   * Background color for the case studies section
+   */
+  background?: ('light' | 'neutral' | 'primary-light' | 'muted') | null;
+  ctaButton?: {
+    text?: string | null;
+    link?: string | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'caseStudies';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
@@ -612,6 +684,8 @@ export interface ArchiveBlock {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
+  heading?: string | null;
+  subheading?: string | null;
   form: number | Form;
   enableIntro?: boolean | null;
   introContent?: {
@@ -877,6 +951,23 @@ export interface TestimonialsBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "teamMembers".
+ */
+export interface TeamMember {
+  id: number;
+  name: string;
+  title: string;
+  bio?: string | null;
+  email?: string | null;
+  linkedIn?: string | null;
+  image?: (number | null) | Media;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1069,6 +1160,10 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'teamMembers';
+        value: number | TeamMember;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1140,6 +1235,21 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
+        title?: T;
+        highlightedWords?:
+          | T
+          | {
+              word?: T;
+              id?: T;
+            };
+        subtitle?: T;
+        ctaButton?:
+          | T
+          | {
+              text?: T;
+              url?: T;
+              newTab?: T;
+            };
         richText?: T;
         links?:
           | T
@@ -1163,6 +1273,7 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         aboutTeaser?: T | AboutTeaserBlockSelect<T>;
         cta?: T | CallToActionBlockSelect<T>;
+        caseStudies?: T | CaseStudiesBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         ctaSection?: T | CTASectionBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
@@ -1250,6 +1361,54 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CaseStudiesBlock_select".
+ */
+export interface CaseStudiesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
+  caseStudies?:
+    | T
+    | {
+        title?: T;
+        client?: T;
+        industry?: T;
+        challenge?: T;
+        solution?: T;
+        results?:
+          | T
+          | {
+              result?: T;
+              id?: T;
+            };
+        metrics?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+        image?: T;
+        tags?:
+          | T
+          | {
+              tag?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  displayStyle?: T;
+  background?: T;
+  ctaButton?:
+    | T
+    | {
+        text?: T;
+        link?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "ContentBlock_select".
  */
 export interface ContentBlockSelect<T extends boolean = true> {
@@ -1327,6 +1486,8 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
  * via the `definition` "FormBlock_select".
  */
 export interface FormBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subheading?: T;
   form?: T;
   enableIntro?: T;
   introContent?: T;
@@ -1556,6 +1717,22 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "teamMembers_select".
+ */
+export interface TeamMembersSelect<T extends boolean = true> {
+  name?: T;
+  title?: T;
+  bio?: T;
+  email?: T;
+  linkedIn?: T;
+  image?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1818,6 +1995,14 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: number;
+  /**
+   * Optional logo image
+   */
+  logo?: (number | null) | Media;
+  /**
+   * Site name (used when no logo is provided)
+   */
+  siteName?: string | null;
   navItems?:
     | {
         link: {
@@ -1838,6 +2023,14 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Site-wide CTA button displayed in the header
+   */
+  ctaButton?: {
+    text?: string | null;
+    link?: string | null;
+    newTab?: boolean | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1847,26 +2040,36 @@ export interface Header {
  */
 export interface Footer {
   id: number;
-  navItems?:
+  footerNav?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: number | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: number | Post;
-              } | null);
-          url?: string | null;
-          label: string;
-        };
+        label: string;
+        url: string;
+        newTab?: boolean | null;
         id?: string | null;
       }[]
     | null;
+  teamLinks?:
+    | {
+        member: number | TeamMember;
+        /**
+         * Override the team member name with custom text
+         */
+        labelOverride?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  resourceLinks?:
+    | {
+        title: string;
+        link: string;
+        id?: string | null;
+      }[]
+    | null;
+  copyrightText?: string | null;
+  companyInfo?: {
+    name?: string | null;
+    tagline?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1875,6 +2078,8 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  logo?: T;
+  siteName?: T;
   navItems?:
     | T
     | {
@@ -1889,6 +2094,13 @@ export interface HeaderSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  ctaButton?:
+    | T
+    | {
+        text?: T;
+        link?: T;
+        newTab?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1898,19 +2110,34 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  footerNav?:
     | T
     | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
-            };
+        label?: T;
+        url?: T;
+        newTab?: T;
         id?: T;
+      };
+  teamLinks?:
+    | T
+    | {
+        member?: T;
+        labelOverride?: T;
+        id?: T;
+      };
+  resourceLinks?:
+    | T
+    | {
+        title?: T;
+        link?: T;
+        id?: T;
+      };
+  copyrightText?: T;
+  companyInfo?:
+    | T
+    | {
+        name?: T;
+        tagline?: T;
       };
   updatedAt?: T;
   createdAt?: T;

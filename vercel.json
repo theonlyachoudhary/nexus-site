@@ -1,0 +1,16 @@
+{
+  "version": 3,
+  "build": {
+    "env": {
+      "POSTGRES_URL": "@POSTGRES_URL",
+      "PAYLOAD_SECRET": "@PAYLOAD_SECRET"
+    }
+  },
+  "routes": [{ "src": "/admin/(.*)", "dest": "/api/admin/$1" }],
+  "functions": {
+    "api/**.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  }
+}

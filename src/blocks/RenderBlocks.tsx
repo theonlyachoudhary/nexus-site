@@ -5,6 +5,7 @@ import type { Page } from '@/payload-types'
 import { AboutTeaserBlock } from '@/blocks/AboutTeaser/Component'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
+import { CaseStudiesBlock } from '@/blocks/CaseStudies/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { CTASectionBlock } from '@/blocks/CTASection/Component'
 import { FormBlock } from '@/blocks/Form/Component'
@@ -15,6 +16,7 @@ import { TestimonialsBlock } from '@/blocks/Testimonials/Component'
 const blockComponents = {
   aboutTeaser: AboutTeaserBlock,
   archive: ArchiveBlock,
+  caseStudies: CaseStudiesBlock,
   content: ContentBlock,
   cta: CallToActionBlock,
   ctaSection: CTASectionBlock,
@@ -42,7 +44,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <div className="" key={index}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </div>

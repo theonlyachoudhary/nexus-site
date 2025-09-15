@@ -42,38 +42,40 @@ export const TestimonialsBlock: React.FC<TestimonialsBlockProps> = ({
   },
 }) => {
   const bgClass = {
-    light: 'bg-white',
+    light: 'bg-brand-neutral/25',
     neutral: 'bg-brand-neutral/25',
     'primary-light': 'bg-brand-primary-light/10',
-    muted: 'bg-muted/30',
+    muted: 'bg-brand-neutral/20',
   }[background]
 
   return (
     <section className={cn('py-20', bgClass)}>
       <SectionHeader heading={heading} subheading={subheading} />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container my-16">
         {/* Removed the header section since it's now in SectionHeader */}
 
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
-          {testimonials.map((testimonial, index) => (
-            <Card
-              key={index}
-              className="p-6 hover:shadow-lg transition-shadow bg-brand-neutral/25 flex flex-col"
-            >
-              <CardContent className="flex flex-col h-full p-0">
-                <p className="leading-relaxed italic flex-grow mb-4">"{testimonial.quote}"</p>
-                <div className="border-t pt-4 mt-auto">
-                  <p className="font-semibold text-foreground">{testimonial.author}</p>
-                  <p className="text-sm">
-                    {testimonial.role}
-                    {testimonial.role && testimonial.company ? ', ' : ''}
-                    {testimonial.company}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="flex justify-center">
+          <div className="grid md:grid-cols-3 gap-y-8 gap-x-16 mb-12">
+            {testimonials.map((testimonial, index) => (
+              <Card
+                key={index}
+                className="p-6 hover:shadow-lg transition-shadow bg-brand-neutral/25 flex flex-col"
+              >
+                <CardContent className="flex flex-col h-full p-0">
+                  <p className="leading-relaxed italic flex-grow mb-4">"{testimonial.quote}"</p>
+                  <div className="border-t pt-4 mt-auto">
+                    <p className="font-semibold text-foreground">{testimonial.author}</p>
+                    <p className="text-sm">
+                      {testimonial.role}
+                      {testimonial.role && testimonial.company ? ', ' : ''}
+                      {testimonial.company}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
         <div className="text-center space-y-4">

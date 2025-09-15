@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowRight, CheckCircle, Clock, Users } from 'lucide-react'
 import Link from 'next/link'
+import { SectionHeader } from '@/components/SectionHeader'
 
 type CTASectionProps = {
   heading?: string
@@ -26,41 +27,42 @@ export const CTASectionBlock: React.FC<CTASectionProps> = ({
   primaryCta = { text: 'Book Your Free Consultation', link: '/book-consultation' },
 }) => {
   return (
-    <section className="py-24 bg-gradient-to-br from-background to-muted/30">
+    <section className="py-24 bg-gradient-to-br from-background">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight">
-                {heading}
-              </h2>
-              <p className="text-xl leading-relaxed">{subheading}</p>
-            </div>
+            <SectionHeader
+              heading={heading}
+              subheading={subheading}
+              containerClassName="max-w-7xl sm:px-6 lg:px-8"
+              headingClassName="text-4xl md:text-5xl font-semibold"
+              subheadingClassName="text-xl subtitle text-brand-text-secondary"
+            />
 
             <div className="grid sm:grid-cols-2 gap-6">
-              <div className="flex items-start gap-3">
-                <CheckCircle className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+              <div className="flex flex-col items-center text-center gap-3 md:flex-col md:items-center md:text-center lg:flex-row lg:items-start lg:text-left">
+                <CheckCircle className="w-6 h-6 text-primary flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-foreground mb-1">Free Consultation</h4>
                   <p className="text-sm">No commitment required</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <Clock className="w-6 h-6 text-accent mt-1 flex-shrink-0" />
+              <div className="flex flex-col items-center text-center gap-3 md:flex-col md:items-center md:text-center lg:flex-row lg:items-start lg:text-left">
+                <Clock className="w-6 h-6 text-accent flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-foreground mb-1">Quick Assessment</h4>
                   <p className="text-sm">30-minute discovery call</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <Users className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+              <div className="flex flex-col items-center text-center gap-3 md:flex-col md:items-center md:text-center lg:flex-row lg:items-start lg:text-left">
+                <Users className="w-6 h-6 text-primary flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-foreground mb-1">Expert Guidance</h4>
                   <p className="text-sm">Tailored recommendations</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <ArrowRight className="w-6 h-6 text-accent mt-1 flex-shrink-0" />
+              <div className="flex flex-col items-center text-center gap-3 md:flex-col md:items-center md:text-center lg:flex-row lg:items-start lg:text-left">
+                <ArrowRight className="w-6 h-6 text-accent flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-foreground mb-1">Clear Roadmap</h4>
                   <p className="text-sm">Actionable next steps</p>
@@ -80,7 +82,7 @@ export const CTASectionBlock: React.FC<CTASectionProps> = ({
             <CardContent className="space-y-6">
               <Button
                 size="lg"
-                variant="secondary"
+                variant="outline"
                 className="w-full text-lg py-4 font-semibold"
                 asChild
               >

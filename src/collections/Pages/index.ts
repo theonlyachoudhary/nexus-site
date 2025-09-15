@@ -5,6 +5,7 @@ import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { AboutTeaser } from '../../blocks/AboutTeaser/config'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
+import { CaseStudiesBlock } from '../../blocks/CaseStudies/config'
 import { Content } from '../../blocks/Content/config'
 import { CTASectionBlock } from '../../blocks/CTASection/config'
 import { FormBlock } from '../../blocks/Form/config'
@@ -82,6 +83,7 @@ export const Pages: CollectionConfig<'pages'> = {
               blocks: [
                 AboutTeaser,
                 CallToAction,
+                CaseStudiesBlock,
                 Content,
                 CTASectionBlock,
                 MediaBlock,

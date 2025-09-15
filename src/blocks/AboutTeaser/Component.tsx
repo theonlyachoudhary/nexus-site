@@ -57,7 +57,7 @@ export const AboutTeaserBlock: React.FC<AboutTeaserBlockProps> = (props) => {
   } = props
 
   return (
-    <section className="py-20">
+    <section className="py-20 my-0 bg-brand-neutral/20">
       <SectionHeader
         heading={heading}
         subheading={subheading}

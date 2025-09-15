@@ -31,7 +31,7 @@ export const SolutionsBlock: React.FC<SolutionsBlockProps> = ({
   cta,
 }) => {
   return (
-    <section className="py-16 md:py-24 bg-brand-neutral/5">
+    <section className="py-16 md:py-24">
       <SectionHeader heading={heading} subheading={subheading} />
 
       <div className="container mx-auto px-4">

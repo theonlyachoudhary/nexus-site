@@ -9,12 +9,14 @@ import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import { seedFooter, seedTeamMembers } from './footer'
 
 const collections: CollectionSlug[] = [
   'categories',
   'media',
   'pages',
   'posts',
+  'teamMembers',
   'forms',
   'form-submissions',
   'search',
@@ -42,18 +44,38 @@ export const seed = async ({
 
   // clear the database
   await Promise.all(
-    globals.map((global) =>
-      payload.updateGlobal({
-        slug: global,
-        data: {
-          navItems: [],
-        },
-        depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
-      }),
-    ),
+    globals.map(async (global) => {
+      if (global === 'header') {
+        return payload.updateGlobal({
+          slug: global,
+          data: {
+            navItems: [],
+          },
+          depth: 0,
+          context: {
+            disableRevalidate: true,
+          },
+        })
+      } else if (global === 'footer') {
+        return payload.updateGlobal({
+          slug: global,
+          data: {
+            footerNav: [],
+            teamLinks: [],
+            resourceLinks: [],
+            copyrightText: '',
+            companyInfo: {
+              name: '',
+              tagline: '',
+            },
+          },
+          depth: 0,
+          context: {
+            disableRevalidate: true,
+          },
+        })
+      }
+    }),
   )
 
   await Promise.all(
@@ -282,62 +304,34 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding globals...`)
 
-  await Promise.all([
-    payload.updateGlobal({
-      slug: 'header',
-      data: {
-        navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: 'Posts',
-              url: '/posts',
+  await payload.updateGlobal({
+    slug: 'header',
+    data: {
+      navItems: [
+        {
+          link: {
+            type: 'custom',
+            label: 'Posts',
+            url: '/posts',
+          },
+        },
+        {
+          link: {
+            type: 'reference',
+            label: 'Contact',
+            reference: {
+              relationTo: 'pages',
+              value: contactPage.id,
             },
           },
-          {
-            link: {
-              type: 'reference',
-              label: 'Contact',
-              reference: {
-                relationTo: 'pages',
-                value: contactPage.id,
-              },
-            },
-          },
-        ],
-      },
-    }),
-    payload.updateGlobal({
-      slug: 'footer',
-      data: {
-        navItems: [
-          {
-            link: {
-              type: 'custom',
-              label: 'Admin',
-              url: '/admin',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
-            },
-          },
-        ],
-      },
-    }),
-  ])
+        },
+      ],
+    },
+  })
+
+  // Seed team members and footer with new structure
+  await seedTeamMembers(payload)
+  await seedFooter(payload)
 
   payload.logger.info('Seeded database successfully!')
 }
